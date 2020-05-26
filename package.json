@@ -1,6 +1,6 @@
 {
   "name": "@jasmith79/request-noninteractive-callback",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Allows scheduling a callback to run once a user quits interacting with an element",
   "main": "dist/index.js",
   "scripts": {
