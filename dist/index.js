@@ -54,11 +54,12 @@ const debounce = (n, immed, f) => {
 exports.formHelper = (selector, f) => {
     let lastState = '';
     return async () => {
+        var _a;
         const elem = document.getElementById(selector);
         if (!elem) {
             throw new Error(`No element matches selector '${selector}.`);
         }
-        if (!elem?.elements) {
+        if (!((_a = elem) === null || _a === void 0 ? void 0 : _a.elements)) {
             throw new Error(`Element matched by '${selector} does not appear to be a form.`);
         }
         const el = elem;
@@ -113,6 +114,7 @@ class NonInteractiveCallbackManager {
         InteractiveEvents.CLICK,
         InteractiveEvents.CHANGE,
     ], }) {
+        var _a, _b;
         // node and browser have different return types for setTimeout,
         // this sidesteps the issue.
         this.timeoutHandle = setTimeout(() => { }, 0);
@@ -120,7 +122,7 @@ class NonInteractiveCallbackManager {
         this.focusHandler = this.focusHandler.bind(this);
         this.notifyOnFocusLoss = notifyOnFocusLoss;
         this.notifyOnMouseLeave = notifyOnMouseLeave;
-        this.selector = selector || element?.id ? `#${element?.id}` : '';
+        this.selector = selector || (element === null || element === void 0 ? void 0 : element.id) ? `#${element === null || element === void 0 ? void 0 : element.id}` : '';
         this.eventList = interactiveEvents;
         this.registeredCallbacks = [];
         if (!this.selector) {
@@ -133,13 +135,14 @@ class NonInteractiveCallbackManager {
             this.timeoutHandle = debounced();
         });
         this.eventList.forEach((evt) => {
-            this.element?.addEventListener(evt, this.listener);
+            var _a;
+            (_a = this.element) === null || _a === void 0 ? void 0 : _a.addEventListener(evt, this.listener);
         });
         if (notifyOnFocusLoss) {
             document.addEventListener('focus', this.focusHandler);
         }
         if (notifyOnMouseLeave) {
-            this.element?.addEventListener('mouseleave', this.notify);
+            (_a = this.element) === null || _a === void 0 ? void 0 : _a.addEventListener('mouseleave', this.notify);
         }
         // We'll watch the parentNode to see if the element we're listening
         // on is removed:
@@ -153,7 +156,7 @@ class NonInteractiveCallbackManager {
             });
         };
         this.observer = new MutationObserver(cleanup);
-        this.observer.observe(this.element?.parentNode, { childList: true });
+        this.observer.observe((_b = this.element) === null || _b === void 0 ? void 0 : _b.parentNode, { childList: true });
     }
     /**
      * @description Calls all the registered callbacks.
@@ -173,7 +176,8 @@ class NonInteractiveCallbackManager {
      * @returns void
      */
     focusHandler(evt) {
-        if (!this.element?.contains(evt.target)) {
+        var _a;
+        if (!((_a = this.element) === null || _a === void 0 ? void 0 : _a.contains(evt.target))) {
             this.cancelPending();
             this.notify();
         }
@@ -229,12 +233,13 @@ class NonInteractiveCallbackManager {
      * @returns this
      */
     release() {
+        var _a;
         this.observer.disconnect();
-        this.eventList.forEach(evt => this.element?.removeEventListener(evt, this.listener));
+        this.eventList.forEach(evt => { var _a; return (_a = this.element) === null || _a === void 0 ? void 0 : _a.removeEventListener(evt, this.listener); });
         if (this.notifyOnFocusLoss)
             document.removeEventListener('focus', this.focusHandler);
         if (this.notifyOnMouseLeave)
-            this.element?.removeEventListener('mouseleave', this.notify);
+            (_a = this.element) === null || _a === void 0 ? void 0 : _a.removeEventListener('mouseleave', this.notify);
         return this;
     }
 }
